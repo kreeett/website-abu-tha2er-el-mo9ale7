@@ -26,8 +26,10 @@ The first-time reset only happens **once per browser**. To start completely fres
 
 1. **"Captcha" questions.** *Are you a robot?* → *Are you sure?* → *Are you REALLY sure?*
    The buttons swap places and styles between steps. A wrong answer starts you over.
-2. **Brainrot sorting.** Click a character, then a bin, to sort them into
-   *Sea creature*, *Food-based* or *Flying thing*. Any mistake sends you back to step 1.
+2. **Brainrot sorting.** Click a character, then a bin, to sort the six Italian brainrot
+   characters into *Wears shoes* (Tralalero Tralala, Lirilì Larilà), *Made of food*
+   (Ballerina Cappuccina, Chimpanzini Bananini) or *Armed & dangerous* (Tung Tung Tung Sahur,
+   Bombardiro Crocodilo). Any mistake sends you back to step 1.
    The big shiny button is **CANCEL**.
 3. **Login.** The tiny, nearly invisible login button runs away **once** (slowly), then stays put.
    - **Light switch** (top-right corner): turns the screen black and your cursor becomes a
@@ -70,9 +72,9 @@ ts/                    TypeScript source (plain scripts, loaded in order by inde
   main.ts              decides the first screen
 scss/                  Bootstrap variable overrides + the "design system"
 js/, css/              compiled output (committed for GitHub Pages)
-assets/brainrot/       placeholder characters (replace the SVGs with real images)
+assets/brainrot/       the six brainrot character images
 media/                 video.mp4, ad1.mp4 (+ optional ad2.mp4)
 ```
 
-To use real character images, replace the files in `assets/brainrot/`, or edit the list
-at the top of `ts/screens/captchaSort.ts` and run `npm run build`.
+To change the characters or bins, edit the list at the top of `ts/screens/captchaSort.ts`
+(and the bin labels in `index.html`), then run `npm run build`.

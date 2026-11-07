@@ -1,8 +1,6 @@
-// Step 2: sort the placeholder brainrot characters into the right bins.
-// Swap the SVGs in assets/brainrot/ for real images any time (keep the file names,
-// or edit the list below).
+// Step 2: sort the Italian brainrot characters into the right bins.
 
-type BinId = "sea" | "food" | "flying";
+type BinId = "shoes" | "food" | "armed";
 
 interface SortCharacter {
   id: string;
@@ -12,12 +10,12 @@ interface SortCharacter {
 }
 
 const SORT_CHARACTERS: SortCharacter[] = [
-  { id: "pescolino", name: "Pescolino Occhialini", image: "assets/brainrot/pescolino.svg", bin: "sea" },
-  { id: "polpo", name: "Polpo Cappellone", image: "assets/brainrot/polpo.svg", bin: "sea" },
-  { id: "pizzaroni", name: "Pizzaroni Camminatore", image: "assets/brainrot/pizzaroni.svg", bin: "food" },
-  { id: "bananino", name: "Bananino Baffuto", image: "assets/brainrot/bananino.svg", bin: "food" },
-  { id: "tostapane", name: "Tostapane Volante", image: "assets/brainrot/tostapane.svg", bin: "flying" },
-  { id: "cactusso", name: "Cactusso Elicottero", image: "assets/brainrot/cactusso.svg", bin: "flying" },
+  { id: "tralalero", name: "Tralalero Tralala", image: "assets/brainrot/tralalero-tralala.jpg", bin: "shoes" },
+  { id: "lirili", name: "Lirilì Larilà", image: "assets/brainrot/lirili-larila.jpg", bin: "shoes" },
+  { id: "ballerina", name: "Ballerina Cappuccina", image: "assets/brainrot/ballerina-cappuccina.jpg", bin: "food" },
+  { id: "chimpanzini", name: "Chimpanzini Bananini", image: "assets/brainrot/chimpanzini-bananini.jpg", bin: "food" },
+  { id: "tung", name: "Tung Tung Tung Sahur", image: "assets/brainrot/tung-tung-tung-sahur.jpg", bin: "armed" },
+  { id: "bombardiro", name: "Bombardiro Crocodilo", image: "assets/brainrot/bombardiro-crocodilo.jpg", bin: "armed" },
 ];
 
 let selectedCard: HTMLElement | null = null;

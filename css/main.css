@@ -12073,6 +12073,7 @@ h1, .h1, .h3 {
   height: 70px;
   object-fit: contain;
   opacity: 0.8;
+  border-radius: 40%;
 }
 .char-card span {
   display: block;
