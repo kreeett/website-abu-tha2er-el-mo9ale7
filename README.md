@@ -15,8 +15,9 @@ The compiled CSS and JS are committed, so there is nothing to build:
 - open `index.html` in a browser, **or**
 - enable GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
 
-Put the videos in `media/`: `video.mp4`, `ad1.mp4` and `ad2.mp4`.
-If a file is missing, the player says so instead of breaking.
+The videos live in `media/`: `video.mp4` (main) and `ad1.mp4` (the ad). An optional
+`ad2.mp4` is used for the second ad break; without it, `ad1.mp4` plays again.
+If the main video is missing, the player says so instead of breaking.
 
 The first-time reset only happens **once per browser**. To start completely fresh, click
 **start over** in the footer (or open `index.html?reset`).
@@ -35,10 +36,9 @@ The first-time reset only happens **once per browser**. To start completely fres
    - Catch it once or twice: *Incorrect username or password.*
    - Catch it a third time: *I'm shy 🥺*, and it disappears.
    - **Forgot password?** Whatever you type: *You cannot use your old password.*
-4. **67.** A 67 picture for 4 seconds (`assets/67.svg`, swap it for any image).
-5. **First time only:** the page refreshes itself and **all progress resets**.
+4. **First time only:** the page refreshes itself and **all progress resets**.
    Every later run goes straight to the player.
-6. **The player.**
+5. **The player.** Over the player, the cursor turns into a duck 🦆.
    - **Pause button:** 1st click → Instagram, 2nd click → a very famous music video, 3rd click → plays. Repeats forever.
    - **Progress bar** fills right-to-left (and seeks right-to-left).
    - **Fullscreen** makes the video smaller.
@@ -48,6 +48,7 @@ The first-time reset only happens **once per browser**. To start completely fres
      (e.g. "731p"). Flick faster for more pixels; stop and it drops to 144p.
      (Faked with a pixelated canvas, since it's one video file.)
    - **Two ads** at random times, each with a skip countdown that goes back to 5 once.
+     The ad loops until Skip appears, so even a short ad can't dodge the countdown.
      No seeking during ads.
 
 ## Development
@@ -65,12 +66,12 @@ ts/                    TypeScript source (plain scripts, loaded in order by inde
   storage.ts           localStorage/sessionStorage state
   ui.ts                helpers: screens, flash messages
   components/          driftingCursor.ts, circularVolume.ts
-  screens/             captchaQuestions, captchaSort, login, sixSeven, player
+  screens/             captchaQuestions, captchaSort, login, player
   main.ts              decides the first screen
 scss/                  Bootstrap variable overrides + the "design system"
 js/, css/              compiled output (committed for GitHub Pages)
 assets/brainrot/       placeholder characters (replace the SVGs with real images)
-media/                 video.mp4, ad1.mp4, ad2.mp4
+media/                 video.mp4, ad1.mp4 (+ optional ad2.mp4)
 ```
 
 To use real character images, replace the files in `assets/brainrot/`, or edit the list

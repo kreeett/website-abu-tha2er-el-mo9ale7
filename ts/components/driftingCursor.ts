@@ -18,6 +18,7 @@ let fakeCursorReady = false;
 
 const fakeCursorDot = document.createElement("div");
 fakeCursorDot.className = "fake-cursor";
+fakeCursorDot.innerHTML = `<img class="fake-cursor-duck" src="assets/duck.svg" alt="">`;
 document.body.appendChild(fakeCursorDot);
 
 /** A few out-of-sync sine waves → a sensitivity that never sits still. */
@@ -44,6 +45,9 @@ function tryLockPointer(): void {
 function renderFakeCursor(): void {
   fakeCursorDot.style.left = `${fakePointer.x}px`;
   fakeCursorDot.style.top = `${fakePointer.y}px`;
+  // Over the video player, the cursor becomes a duck. 🦆
+  const overPlayer = !!elementUnderFakeCursor().closest("#player-wrap");
+  fakeCursorDot.classList.toggle("duck", overPlayer);
 }
 
 function elementUnderFakeCursor(): Element {

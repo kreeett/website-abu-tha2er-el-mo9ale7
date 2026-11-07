@@ -19,6 +19,20 @@
 }
 body.lights-off .fake-cursor { display: none; } // the flashlight IS the cursor
 
+.fake-cursor-duck { display: none; width: 100%; height: 100%; }
+.fake-cursor.duck {
+  width: 46px;
+  height: 46px;
+  background: none;
+  border: 0;
+  animation: duck-waddle 0.35s ease-in-out infinite alternate;
+  .fake-cursor-duck { display: block; }
+}
+@keyframes duck-waddle {
+  from { transform: translate(-50%, -50%) rotate(-12deg); }
+  to   { transform: translate(-50%, -50%) rotate(12deg); }
+}
+
 ::selection { background: #fff2fb; color: #f6e8ff; }
 ::-webkit-scrollbar { width: 14px; }
 ::-webkit-scrollbar-track { background: #fff2fb; border-radius: 50rem; }
@@ -249,20 +263,3 @@ body.lights-off .monster { display: block; }
 
 .reset-link { color: #ffe6f6; }
 
-/* 67 */
-.six-seven { padding-top: 2rem; }
-.six-seven-img {
-  width: min(520px, 90vw);
-  border-radius: 50%;
-  animation: six-seven 0.5s ease-in-out infinite alternate;
-}
-.six-seven-text {
-  font-size: 4rem;
-  color: #ffd1ee;
-  text-shadow: 0 0 10px #e6fff2;
-  animation: six-seven 0.5s ease-in-out infinite alternate-reverse;
-}
-@keyframes six-seven {
-  from { transform: rotate(-6deg) translateY(-10px); }
-  to   { transform: rotate(6deg) translateY(10px); }
-}

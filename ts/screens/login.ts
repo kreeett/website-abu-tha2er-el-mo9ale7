@@ -151,10 +151,6 @@ function onLoginCaught(): void {
 }
 
 function afterButtonDisappears(): void {
-  show67(continueAfterLogin);
-}
-
-function continueAfterLogin(): void {
   if (store.get(STORAGE_KEYS.firstRunDone) === "1") {
     enterPlayer();
   } else {

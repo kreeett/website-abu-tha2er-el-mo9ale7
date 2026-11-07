@@ -31,6 +31,7 @@ const MOUSE_IDLE_MS = 90;
 const AD_WINDOW: [number, number] = [0.1, 0.9];
 const AD_MIN_GAP = 0.15;
 const SKIP_COUNTDOWN = [5, 4, 3, 2, 1, 5, 4, 3, 2, 1]; // jumps back to 5 once
+const AD_FALLBACK_SRC = "media/ad1.mp4";
 
 interface AdBreak { video: HTMLVideoElement; at: number; played: boolean; broken: boolean; index: number; }
 
@@ -40,6 +41,7 @@ let activeVideo: HTMLVideoElement;
 let adBreaks: AdBreak[] = [];
 let currentAd: AdBreak | null = null;
 let skipTimer: number | undefined;
+let skipReady = false;
 let fullscreenScale = 1;
 let volume01 = 0.5;
 
@@ -61,10 +63,20 @@ function initPlayer(): void {
 
   adBreaks = [byId<HTMLVideoElement>("vid-ad1"), byId<HTMLVideoElement>("vid-ad2")].map((video, i) => {
     const ad: AdBreak = { video, at: 0, played: false, broken: false, index: i + 1 };
-    const markBroken = () => { ad.broken = true; };
+    const markBroken = () => {
+      // No ad2.mp4? Then you get ad1 again. Twice the fun.
+      if (!video.src.endsWith(AD_FALLBACK_SRC)) {
+        video.src = AD_FALLBACK_SRC;
+        video.load();
+        return;
+      }
+      ad.broken = true;
+    };
     if (video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) markBroken();
     video.addEventListener("error", markBroken);
-    video.addEventListener("ended", () => endAd());
+    // While the fake countdown runs the ad loops, so a short ad can't end before
+    // the Skip button shows up. Once Skip is available, it may end by itself.
+    video.addEventListener("ended", () => { if (skipReady) endAd(); });
     video.addEventListener("timeupdate", () => { if (activeVideo === video) updateProgress(); });
     return ad;
   });
@@ -173,6 +185,8 @@ function startAd(ad: AdBreak): void {
   mainVideo.pause();
   activeVideo = ad.video;
   ad.video.currentTime = 0;
+  ad.video.loop = true;
+  skipReady = false;
   ad.video.volume = volume01;
   ad.video.play().catch(() => endAd());
 
@@ -192,6 +206,8 @@ function startAd(ad: AdBreak): void {
       window.clearInterval(skipTimer);
       skip.textContent = "Skip ad ▶▶";
       skip.disabled = false;
+      skipReady = true;
+      ad.video.loop = false; // now it's allowed to finish on its own
     }
   }, 1000);
   updateProgress();
@@ -200,6 +216,8 @@ function startAd(ad: AdBreak): void {
 function endAd(): void {
   if (!currentAd) return;
   window.clearInterval(skipTimer);
+  skipReady = false;
+  currentAd.video.loop = false;
   currentAd.video.pause();
   currentAd = null;
   activeVideo = mainVideo;
@@ -237,14 +255,22 @@ function renderFrame(now: number): void {
   const ctx = canvas.getContext("2d")!;
   const src = activeVideo;
 
+  // The canvas is always 16:9; portrait or odd-shaped videos get letterboxed.
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   if (src && src.readyState >= 2 && src.videoWidth > 0) {
     const vw = src.videoWidth;
     const vh = src.videoHeight;
-    if (canvas.width !== vw || canvas.height !== vh) { canvas.width = vw; canvas.height = vh; }
+    const scale = Math.min(canvas.width / vw, canvas.height / vh);
+    const dw = vw * scale;
+    const dh = vh * scale;
+    const dx = (canvas.width - dw) / 2;
+    const dy = (canvas.height - dh) / 2;
 
     if (resolution >= vh) {
       ctx.imageSmoothingEnabled = true;
-      ctx.drawImage(src, 0, 0, vw, vh);
+      ctx.drawImage(src, dx, dy, dw, dh);
     } else {
       const sh = resolution;
       const sw = Math.max(1, Math.round((vw / vh) * sh));
@@ -252,11 +278,8 @@ function renderFrame(now: number): void {
       lowResCanvas.height = sh;
       lowResCanvas.getContext("2d")!.drawImage(src, 0, 0, sw, sh);
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(lowResCanvas, 0, 0, sw, sh, 0, 0, vw, vh);
+      ctx.drawImage(lowResCanvas, 0, 0, sw, sh, dx, dy, dw, dh);
     }
-  } else {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   requestAnimationFrame(renderFrame);

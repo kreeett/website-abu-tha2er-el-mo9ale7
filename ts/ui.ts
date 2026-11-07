@@ -1,6 +1,6 @@
 // Small DOM helpers shared by every screen.
 
-type ScreenId = "robot" | "sort" | "login" | "forgot" | "sixseven" | "player";
+type ScreenId = "robot" | "sort" | "login" | "forgot" | "player";
 
 function byId<T extends HTMLElement = HTMLElement>(id: string): T {
   const found = document.getElementById(id);
