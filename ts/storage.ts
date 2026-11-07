@@ -2,7 +2,7 @@
 // leaving the site in the same tab (the pause-button links) and coming back.
 
 const STORAGE_KEYS = {
-  seenLoading: "abuThaer.seenLoading", // the 35s loading + refresh already happened
+  firstRunDone: "abuThaer.firstRunDone", // the first-time refresh/reset already happened
   pauseCount: "abuThaer.pauseCount",   // where we are in the pause-button cycle
   inPlayer: "abuThaer.inPlayer",       // (session) user already reached the player this tab
 } as const;
@@ -29,12 +29,12 @@ const store = {
 };
 
 /** Wipe everything (used by the first-time reset and by ?reset in the URL). */
-function resetAllProgress(keepSeenLoading: boolean): void {
+function resetAllProgress(keepFirstRunDone: boolean): void {
   store.remove(STORAGE_KEYS.pauseCount);
   store.sessionClear();
-  if (keepSeenLoading) {
-    store.set(STORAGE_KEYS.seenLoading, "1");
+  if (keepFirstRunDone) {
+    store.set(STORAGE_KEYS.firstRunDone, "1");
   } else {
-    store.remove(STORAGE_KEYS.seenLoading);
+    store.remove(STORAGE_KEYS.firstRunDone);
   }
 }

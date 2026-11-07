@@ -27,7 +27,7 @@ function buildSortCards() {
 function makeCharacterCard(c) {
     const card = document.createElement("div");
     card.className = "char-card";
-    card.draggable = true;
+    card.draggable = false; // the drifting cursor only does clicks
     card.dataset.id = c.id;
     card.innerHTML = `<img src="${c.image}" alt="${c.name}" draggable="false"><span>${c.name}</span>`;
     card.addEventListener("dragstart", (e) => {

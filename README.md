@@ -2,7 +2,10 @@
 
 A video player website with the **worst user experience we could design, on purpose**.
 House rules: **no right angles anywhere** (everything is round), washed-out low-contrast
-pastels, and a nearly invisible cursor.
+pastels, and a **drifting cursor**: the real cursor is hidden and a faint fake one follows your
+hand at a constantly changing speed (0.2× to 2.6×). All clicks land where the fake cursor is.
+The first click locks the pointer so the fake cursor can go anywhere; press Esc to get your
+real cursor back, click again to re-lock.
 Built with HTML, TypeScript, Sass and Bootstrap. No bundler, no framework.
 
 ## How to run it
@@ -15,26 +18,26 @@ The compiled CSS and JS are committed, so there is nothing to build:
 Put the videos in `media/`: `video.mp4`, `ad1.mp4` and `ad2.mp4`.
 If a file is missing, the player says so instead of breaking.
 
-The 35-second loading bar only ever plays **once per browser**. To see it again, click
-**start over** in the footer (or open `index.html?reset`), which wipes all saved progress.
+The first-time reset only happens **once per browser**. To start completely fresh, click
+**start over** in the footer (or open `index.html?reset`).
 
 ## The experience
 
 1. **"Captcha" questions.** *Are you a robot?* → *Are you sure?* → *Are you REALLY sure?*
    The buttons swap places and styles between steps. A wrong answer starts you over.
-2. **Brainrot sorting.** Drag the characters (or click one, then a bin) into
+2. **Brainrot sorting.** Click a character, then a bin, to sort them into
    *Sea creature*, *Food-based* or *Flying thing*. Any mistake sends you back to step 1.
    The big shiny button is **CANCEL**.
-3. **Login.** A tiny, nearly invisible login button runs away from the cursor. It
-   teleports when cornered, sometimes dodges the instant you press the mouse, shrinks each
-   time you catch it, and ignores the keyboard. (Very rarely it trips and lets you catch it.)
+3. **Login.** The tiny, nearly invisible login button runs away **once** (slowly), then stays put.
+   - **Light switch** (top-right corner): turns the screen black and your cursor becomes a
+     flashlight. In the dark the button can't move, and it glows when the flashlight hits it.
+   - A **monster** hides in the dark. Find it with the flashlight and it roars (loud!).
    - Catch it once or twice: *Incorrect username or password.*
    - Catch it a third time: *I'm shy 🥺*, and it disappears.
    - **Forgot password?** Whatever you type: *You cannot use your old password.*
-4. **67.** The button is gone, so here's a 67 picture for 4 seconds (`assets/67.svg`, swap it for any image).
-5. **First time only:** a 35-second loading bar that stalls and jumps backwards, then
-   the page refreshes itself and **all progress resets**. Every later run goes straight
-   to the player.
+4. **67.** A 67 picture for 4 seconds (`assets/67.svg`, swap it for any image).
+5. **First time only:** the page refreshes itself and **all progress resets**.
+   Every later run goes straight to the player.
 6. **The player.**
    - **Pause button:** 1st click → Instagram, 2nd click → a very famous music video, 3rd click → plays. Repeats forever.
    - **Progress bar** fills right-to-left (and seeks right-to-left).
@@ -61,8 +64,8 @@ index.html
 ts/                    TypeScript source (plain scripts, loaded in order by index.html)
   storage.ts           localStorage/sessionStorage state
   ui.ts                helpers: screens, flash messages
-  components/circularVolume.ts
-  screens/             captchaQuestions, captchaSort, login, sixSeven, loading, player
+  components/          driftingCursor.ts, circularVolume.ts
+  screens/             captchaQuestions, captchaSort, login, sixSeven, player
   main.ts              decides the first screen
 scss/                  Bootstrap variable overrides + the "design system"
 js/, css/              compiled output (committed for GitHub Pages)

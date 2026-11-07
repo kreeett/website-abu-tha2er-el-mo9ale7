@@ -34,7 +34,7 @@
       <div class="card ugly-card wide mx-auto">
         <div class="card-body">
           <h1 class="h3 text-center">Sort the characters into the correct bins</h1>
-          <p class="tiny-print text-center">Drag &amp; drop (or click a character, then click a bin). Mistakes will be punished.</p>
+          <p class="tiny-print text-center">Click a character, then click a bin. Mistakes will be punished.</p>
           <div id="sort-pool" class="sort-pool"></div>
           <div class="row g-3 mt-2">
             <div class="col-md-4"><div class="bin" data-bin="sea"><div class="bin-label">🌊 Sea creature</div><div class="bin-items"></div></div></div>
@@ -67,6 +67,12 @@
           <a href="#" id="forgot-link" class="forgot-link">forgot password?</a>
         </div>
       </div>
+      <!-- Lights out: the darkness has a hole where the flashlight (cursor) is -->
+      <div id="monster" class="monster" aria-hidden="true"><img src="assets/monster.svg" alt=""></div>
+      <div id="darkness" class="darkness" aria-hidden="true"></div>
+      <button id="light-switch" class="light-switch" type="button" title="Light switch" tabindex="-1">
+        <span class="light-switch-knob"></span>
+      </button>
     </section>
 
     <!-- ===== 3b. Forgot password ===== -->
@@ -95,17 +101,6 @@
       </div>
     </section>
 
-    <!-- ===== 4. Loading ===== -->
-    <section id="screen-loading" class="screen">
-      <div class="card ugly-card wide mx-auto text-center">
-        <div class="card-body">
-          <h1 class="h3">Loading your premium experience…</h1>
-          <div class="loading-track my-4"><div id="loading-fill" class="loading-fill"></div></div>
-          <div id="loading-pct" class="loading-pct">0%</div>
-          <p id="loading-msg" class="tiny-print">Warming up the hamsters</p>
-        </div>
-      </div>
-    </section>
 
     <!-- ===== 5. Player ===== -->
     <section id="screen-player" class="screen">
@@ -143,12 +138,12 @@
   <!-- Compiled from /ts by `npm run build` (order matters: plain global scripts) -->
   <script src="js/storage.js" defer></script>
   <script src="js/ui.js" defer></script>
+  <script src="js/components/driftingCursor.js" defer></script>
   <script src="js/components/circularVolume.js" defer></script>
   <script src="js/screens/captchaQuestions.js" defer></script>
   <script src="js/screens/captchaSort.js" defer></script>
   <script src="js/screens/login.js" defer></script>
   <script src="js/screens/sixSeven.js" defer></script>
-  <script src="js/screens/loading.js" defer></script>
   <script src="js/screens/player.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>

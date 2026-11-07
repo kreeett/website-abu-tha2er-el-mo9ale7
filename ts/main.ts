@@ -7,10 +7,10 @@ function boot(): void {
     window.history.replaceState(null, "", window.location.pathname);
   }
 
-  const seenLoading = store.get(STORAGE_KEYS.seenLoading) === "1";
+  const firstRunDone = store.get(STORAGE_KEYS.firstRunDone) === "1";
   const cameBackFromPauseLink = store.sessionGet(STORAGE_KEYS.inPlayer) === "1";
 
-  if (seenLoading && cameBackFromPauseLink) {
+  if (firstRunDone && cameBackFromPauseLink) {
     enterPlayer();
   } else {
     startRobotQuestions();
