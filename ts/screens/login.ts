@@ -2,9 +2,12 @@
 // Catch 1 & 2 → "Incorrect username or password". Catch 3 → "I'm shy 🥺" and it vanishes.
 // Plus a "forgot password" form that never accepts anything.
 
-const FLEE_RADIUS = 110;    // px: how close the cursor may get before it runs
-const FLEE_DISTANCE = 170;  // px: how far it jumps away
-const FREEZE_CHANCE = 0.18; // chance it "trips" on an approach and stays put
+const FLEE_RADIUS = 170;      // px: how close the cursor may get before it runs
+const FLEE_DISTANCE = 230;    // px: how far it jumps away
+const FREEZE_CHANCE = 0.07;   // chance it "trips" on an approach and stays put
+const CORNERED_ESCAPE = 0.75; // when pinned against an edge, chance it teleports away instead
+const DODGE_CHANCE = 0.45;    // chance it dodges at the very moment you press the mouse
+const SHRINK_PER_CATCH = 0.75;
 
 let loginWired = false;
 let catches = 0;
@@ -27,7 +30,21 @@ function wireLogin(): void {
   const btn = loginButton();
 
   document.addEventListener("mousemove", onLoginMouseMove);
-  btn.addEventListener("click", onLoginCaught);
+  btn.addEventListener("mousedown", (e) => {
+    // Last-second dodge: the click never completes because the button isn't there anymore.
+    if (!loginLocked && Math.random() < DODGE_CHANCE) {
+      e.preventDefault();
+      teleportButton(btn);
+    }
+  });
+  btn.addEventListener("click", (e) => {
+    // Keyboard "clicks" (Enter/Space) have detail 0. Mouse only, please.
+    if (e.detail === 0) {
+      flash("⌨️ Nice try. Use the mouse.");
+      return;
+    }
+    onLoginCaught();
+  });
 
   // Enter key doesn't count. Use the button like everyone else.
   byId<HTMLFormElement>("login-form").addEventListener("submit", (e) => {
@@ -70,12 +87,21 @@ function makeFloating(btn: HTMLButtonElement): void {
   isFloating = true;
 }
 
-function moveButtonTo(btn: HTMLButtonElement, x: number, y: number): void {
+/** Moves the button, clamped to the screen. Returns true if it got pinned against an edge. */
+function moveButtonTo(btn: HTMLButtonElement, x: number, y: number): boolean {
   const pad = 8;
   const maxX = window.innerWidth - btn.offsetWidth - pad;
   const maxY = window.innerHeight - btn.offsetHeight - pad;
-  btn.style.left = `${Math.min(Math.max(pad, x), maxX)}px`;
-  btn.style.top = `${Math.min(Math.max(pad, y), maxY)}px`;
+  const cx = Math.min(Math.max(pad, x), maxX);
+  const cy = Math.min(Math.max(pad, y), maxY);
+  btn.style.left = `${cx}px`;
+  btn.style.top = `${cy}px`;
+  return cx !== x || cy !== y;
+}
+
+function teleportButton(btn: HTMLButtonElement): void {
+  makeFloating(btn);
+  moveButtonTo(btn, randomBetween(0, window.innerWidth), randomBetween(0, window.innerHeight));
 }
 
 function onLoginMouseMove(e: MouseEvent): void {
@@ -101,7 +127,8 @@ function onLoginMouseMove(e: MouseEvent): void {
   const len = Math.hypot(dx, dy);
   const nx = r.left + (dx / len) * FLEE_DISTANCE + randomBetween(-30, 30);
   const ny = r.top + (dy / len) * FLEE_DISTANCE + randomBetween(-30, 30);
-  moveButtonTo(btn, nx, ny);
+  const pinned = moveButtonTo(btn, nx, ny);
+  if (pinned && Math.random() < CORNERED_ESCAPE) teleportButton(btn);
 }
 
 function onLoginCaught(): void {
@@ -112,8 +139,9 @@ function onLoginCaught(): void {
   if (catches < 3) {
     byId("login-error").textContent = "❌ Incorrect username or password.";
     byId<HTMLInputElement>("login-pass").value = "";
-    makeFloating(btn);
-    moveButtonTo(btn, randomBetween(0, window.innerWidth), randomBetween(0, window.innerHeight));
+    // It gets smaller every time you catch it.
+    btn.style.transform = `scale(${Math.pow(SHRINK_PER_CATCH, catches)})`;
+    teleportButton(btn);
     return;
   }
 

@@ -1,6 +1,8 @@
 # Abu Tha2er el Mo9ale7: Premium Video Experience™
 
 A video player website with the **worst user experience we could design, on purpose**.
+House rules: **no right angles anywhere** (everything is round), washed-out low-contrast
+pastels, and a nearly invisible cursor.
 Built with HTML, TypeScript, Sass and Bootstrap. No bundler, no framework.
 
 ## How to run it
@@ -22,7 +24,9 @@ To start from scratch (e.g. to see the first-time loading bar again), open `inde
 2. **Brainrot sorting.** Drag the characters (or click one, then a bin) into
    *Sea creature*, *Food-based* or *Flying thing*. Any mistake sends you back to step 1.
    The big shiny button is **CANCEL**.
-3. **Login.** The login button runs away from the cursor (sometimes it trips).
+3. **Login.** A tiny, nearly invisible login button runs away from the cursor. It
+   teleports when cornered, sometimes dodges the instant you press the mouse, shrinks each
+   time you catch it, and ignores the keyboard. (Very rarely it trips and lets you catch it.)
    - Catch it once or twice: *Incorrect username or password.*
    - Catch it a third time: *I'm shy 🥺*, and it disappears.
    - **Forgot password?** Whatever you type: *You cannot use your old password.*

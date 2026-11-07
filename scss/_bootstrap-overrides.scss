@@ -1,36 +1,48 @@
-// Bootstrap variables, lovingly ruined.
+// Bootstrap variables, lovingly ruined: washed-out pastels and no corners anywhere.
 
-$primary:   #ff00c8;  // hot pink
-$secondary: #39ff14;  // radioactive lime
-$success:   #ffe600;  // "success" is yellow
-$danger:    #00e5ff;  // "danger" is calm cyan
-$warning:   #8a2be2;  // "warning" is purple
-$info:      #ff6a00;  // "info" is orange
-$light:     #fff4b8;
-$dark:      #2b0040;
+$primary:   #ffc2ef;  // pink-ish
+$secondary: #d2ffe2;  // mint-ish
+$success:   #fff4b5;  // "success" is pale yellow
+$danger:    #c8f6ff;  // "danger" is calm baby blue
+$warning:   #e4d0ff;  // "warning" is lavender
+$info:      #ffdcc2;  // "info" is peach
+$light:     #fffbe9;
+$dark:      #f3e6ff;  // "dark" is not dark
 
-$min-contrast-ratio: 1.2; // accessibility? never heard of her
+$min-contrast-ratio: 1; // accessibility? never heard of her
+$color-contrast-light: #fffafd;
+$color-contrast-dark: #f0dcff;
 
-$body-bg: #ffd6f5;
-$body-color: #7a5cff;
+$body-bg: #ffeffa;
+$body-color: #dcc4ff;
 
 $font-family-sans-serif: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
 $headings-font-family: Papyrus, "Papyrus Condensed", fantasy;
-$headings-color: #00b37e;
+$headings-color: #b9ead6;
 
-$border-radius: 0;
-$border-radius-sm: 1.5rem;
-$border-radius-lg: 0.1rem;
-$btn-border-radius: 2rem 0 2rem 0;
-$btn-border-radius-sm: 0 1rem 0 1rem;
-$btn-border-radius-lg: 0;
+// ROUND. EVERYTHING ROUND.
+$border-radius:      2rem;
+$border-radius-sm:   1.5rem;
+$border-radius-lg:   3rem;
+$border-radius-xl:   3.5rem;
+$border-radius-xxl:  4rem;
+$border-radius-pill: 50rem;
+$btn-border-radius:    50rem;
+$btn-border-radius-sm: 50rem;
+$btn-border-radius-lg: 50rem;
+$input-border-radius:    50rem;
+$input-border-radius-sm: 50rem;
+$input-border-radius-lg: 50rem;
 
-$input-bg: #e6fff0;
-$input-color: #b38bff;
-$input-border-color: #ff8800;
+$input-bg: #f2fff7;
+$input-color: #e0ccff;
+$input-border-color: #ffe0c8;
 $input-border-width: 3px;
-$input-placeholder-color: #ff9ce8;
+$input-placeholder-color: #ffd9f3;
+$input-focus-border-color: #ffd0f0;
+$input-focus-box-shadow: 0 0 0 0.3rem rgba(255, 220, 245, 0.6);
 
-$card-bg: #fffbcc;
+$card-bg: #fffde8;
 $card-border-width: 6px;
-$card-border-color: #00e5ff;
+$card-border-color: #d8f8ff;
+$card-border-radius: 4rem;

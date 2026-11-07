@@ -60,7 +60,7 @@
             <label class="form-label tiny-print" for="login-pass">pasword</label>
             <input id="login-pass" class="form-control mb-4" type="password" placeholder="Username">
             <div class="login-btn-slot">
-              <button id="login-btn" type="button" class="btn btn-success">Log in</button>
+              <button id="login-btn" type="button" class="btn btn-success" tabindex="-1">Log in</button>
             </div>
           </form>
           <div id="login-error" class="login-error"></div>
@@ -116,13 +116,13 @@
         </div>
 
         <div class="controls">
-          <button id="btn-pause" class="btn btn-warning ctrl-btn" type="button" title="Pause">⏸</button>
+          <button id="btn-pause" class="btn btn-warning ctrl-btn" type="button" title="Pause">◉</button>
           <div class="progress-area">
             <div id="progress-track" class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
             <div id="time-label" class="time-label">0:00 / 0:00</div>
           </div>
           <div id="volume-knob" class="volume-knob" title="Volume"></div>
-          <button id="btn-fullscreen" class="btn btn-info ctrl-btn" type="button" title="Fullscreen">⛶</button>
+          <button id="btn-fullscreen" class="btn btn-info ctrl-btn" type="button" title="Fullscreen">◎</button>
         </div>
         <p class="tiny-print text-center mt-2">Tip: quality is powered by mouse movement. Shake harder for HD.</p>
       </div>
