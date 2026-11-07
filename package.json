@@ -1,0 +1,20 @@
+{
+  "name": "website-abu-tha2er-el-mo9ale7",
+  "version": "1.0.0",
+  "description": "The worst video player experience ever designed. On purpose.",
+  "scripts": {
+    "build": "npm run build:ts && npm run build:css",
+    "build:ts": "tsc",
+    "build:css": "sass scss/main.scss css/main.css --no-source-map --load-path=node_modules --quiet-deps --silence-deprecation=import,global-builtin,color-functions,if-function",
+    "watch:ts": "tsc --watch",
+    "watch:css": "sass --watch scss/main.scss css/main.css --no-source-map --load-path=node_modules --quiet-deps --silence-deprecation=import,global-builtin,color-functions,if-function"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bootstrap": "^5.3.8",
+    "sass": "^1.108.1",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

@@ -1,0 +1,151 @@
+// The "design system".
+
+body {
+  min-height: 100vh;
+  background-color: #ffd6f5;
+  background-image:
+    linear-gradient(45deg, #b8ffcf 25%, transparent 25%),
+    linear-gradient(-45deg, #b8ffcf 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #b8ffcf 75%),
+    linear-gradient(-45deg, transparent 75%, #b8ffcf 75%);
+  background-size: 46px 46px;
+  background-position: 0 0, 0 23px, 23px -23px, -23px 0;
+  cursor: crosshair;
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Header marquee */
+.site-header {
+  background: repeating-linear-gradient(90deg, #ff00c8 0 40px, #ffe600 40px 80px);
+  border-bottom: 5px dashed #00e5ff;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: Papyrus, fantasy;
+  font-weight: bold;
+  color: #39ff14;
+  text-shadow: 2px 2px 0 #8a2be2;
+  padding: 0.4rem 0;
+}
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 14s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(-100%); } }
+
+.site-footer {
+  text-align: center;
+  font-size: 0.6rem;
+  color: #ffc6ef;
+  padding: 2rem 0 1rem;
+}
+
+/* Cards */
+.ugly-card {
+  max-width: 460px;
+  box-shadow: 12px 12px 0 #ff00c8, -6px -6px 0 #39ff14;
+  transform: rotate(-1.2deg);
+  &.wide { max-width: 900px; transform: rotate(0.6deg); }
+}
+
+.tiny-print { font-size: 0.65rem; color: #c6b3ff; }
+
+.robot-question {
+  font-family: Papyrus, fantasy;
+  color: #ff6a00;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.tiny-yes { font-size: 0.6rem; padding: 0 2px; color: #ffd6f5 !important; }
+
+/* Flash message */
+.flash {
+  position: fixed;
+  top: 54px;
+  left: 50%;
+  transform: translate(-50%, -200%);
+  z-index: 2000;
+  background: #39ff14;
+  color: #ff00c8;
+  border: 4px dotted #8a2be2;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  max-width: 90vw;
+  text-align: center;
+  visibility: hidden;
+  transition: transform 0.25s cubic-bezier(0.5, 2, 0.5, 0.5), visibility 0s 0.25s;
+  &.show { visibility: visible; transform: translate(-50%, 0) rotate(1deg); transition-delay: 0s; }
+}
+
+/* Sorting */
+.sort-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  min-height: 150px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: 3px dashed #ff6a00;
+  background: #e6fff0;
+}
+.char-card {
+  width: 112px;
+  background: #fff;
+  border: 3px solid #8a2be2;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+  padding: 4px;
+  transition: transform 0.15s;
+  img { width: 100%; height: 88px; object-fit: contain; }
+  span { display: block; font-size: 0.6rem; color: #ffb3ec; line-height: 1.1; }
+  &:hover { transform: rotate(6deg) scale(1.05); }
+  &.selected { outline: 5px solid #39ff14; transform: scale(1.1) rotate(-4deg); }
+  &.dragging { opacity: 0.4; }
+}
+.bin {
+  min-height: 190px;
+  border: 5px double #00b37e;
+  background: #fff0fb;
+  padding: 0.5rem;
+  cursor: pointer;
+  &.over { background: #ffe600; }
+  .bin-label { font-family: Papyrus, fantasy; font-weight: bold; color: #00e5ff; text-align: center; }
+  .bin-items { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 0.4rem; }
+  .char-card { width: 84px; img { height: 62px; } }
+}
+
+/* Login */
+.login-btn-slot { text-align: right; min-height: 38px; }
+.runaway {
+  position: fixed !important;
+  z-index: 1500;
+  white-space: nowrap;
+  transition: left 0.12s ease-out, top 0.12s ease-out;
+}
+.shy {
+  opacity: 0;
+  transform: scale(0.1) rotate(40deg);
+  transition: opacity 1.6s, transform 1.6s;
+}
+.login-error { color: #00e5ff; font-weight: bold; min-height: 1.5rem; margin-top: 0.5rem; text-align: center; }
+.forgot-link { display: block; text-align: center; font-size: 0.55rem; color: #ffc6ef; margin-top: 0.4rem; }
+
+/* Loading */
+.loading-track {
+  height: 34px;
+  border: 4px ridge #8a2be2;
+  background: #fff;
+  overflow: hidden;
+}
+.loading-fill {
+  height: 100%;
+  width: 0;
+  background: repeating-linear-gradient(-45deg, #ff00c8 0 14px, #39ff14 14px 28px);
+  animation: stripes 0.6s linear infinite;
+}
+@keyframes stripes { to { background-position: 40px 0; } }
+.loading-pct { font-size: 3rem; font-family: Papyrus, fantasy; color: #ff6a00; }

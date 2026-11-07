@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abu Tha2er el Mo9ale7 – Premium Video Experience™</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥔</text></svg>">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="marquee"><span>★ WELCOME TO ABU THA2ER EL MO9ALE7 PREMIUM VIDEO EXPERIENCE™ ★ BEST VIEWED IN INTERNET EXPLORER 6 ★ PLEASE DO NOT ENJOY RESPONSIBLY ★</span></div>
+  </header>
+
+  <div id="flash" class="flash" role="alert" aria-live="assertive"></div>
+
+  <main class="container py-4">
+
+    <!-- ===== 1. Robot questions ===== -->
+    <section id="screen-robot" class="screen">
+      <div class="card ugly-card mx-auto">
+        <div class="card-body text-center">
+          <h1 class="h3 mb-1">Security Check 🔒</h1>
+          <p class="tiny-print">Step <span id="robot-step">1</span> of ???</p>
+          <h2 id="robot-question" class="robot-question my-4">Are you a robot?</h2>
+          <div id="robot-buttons" class="d-flex justify-content-center gap-3 flex-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2. Brainrot sorting ===== -->
+    <section id="screen-sort" class="screen">
+      <div class="card ugly-card wide mx-auto">
+        <div class="card-body">
+          <h1 class="h3 text-center">Sort the characters into the correct bins</h1>
+          <p class="tiny-print text-center">Drag &amp; drop (or click a character, then click a bin). Mistakes will be punished.</p>
+          <div id="sort-pool" class="sort-pool"></div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-4"><div class="bin" data-bin="sea"><div class="bin-label">🌊 Sea creature</div><div class="bin-items"></div></div></div>
+            <div class="col-md-4"><div class="bin" data-bin="food"><div class="bin-label">🍕 Food-based</div><div class="bin-items"></div></div></div>
+            <div class="col-md-4"><div class="bin" data-bin="flying"><div class="bin-label">🪽 Flying thing</div><div class="bin-items"></div></div></div>
+          </div>
+          <div class="d-flex justify-content-between mt-4">
+            <button id="sort-verify" class="btn btn-secondary btn-sm">verify</button>
+            <button id="sort-reset" class="btn btn-primary btn-lg">CANCEL</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. Login ===== -->
+    <section id="screen-login" class="screen">
+      <div class="card ugly-card mx-auto">
+        <div class="card-body">
+          <h1 class="h3 text-center">Log In</h1>
+          <form id="login-form" autocomplete="off" novalidate>
+            <label class="form-label tiny-print" for="login-user">usrname</label>
+            <input id="login-user" class="form-control mb-3" type="text" placeholder="Password">
+            <label class="form-label tiny-print" for="login-pass">pasword</label>
+            <input id="login-pass" class="form-control mb-4" type="password" placeholder="Username">
+            <div class="login-btn-slot">
+              <button id="login-btn" type="button" class="btn btn-success">Log in</button>
+            </div>
+          </form>
+          <div id="login-error" class="login-error"></div>
+          <a href="#" id="forgot-link" class="forgot-link">forgot password?</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3b. Forgot password ===== -->
+    <section id="screen-forgot" class="screen">
+      <div class="card ugly-card mx-auto">
+        <div class="card-body">
+          <h1 class="h3 text-center">Reset Password</h1>
+          <form id="forgot-form" autocomplete="off" novalidate>
+            <label class="form-label tiny-print" for="forgot-new">New password</label>
+            <input id="forgot-new" class="form-control mb-3" type="password">
+            <label class="form-label tiny-print" for="forgot-confirm">Confirm new password</label>
+            <input id="forgot-confirm" class="form-control mb-3" type="password">
+            <button type="submit" class="btn btn-danger w-100">Change password</button>
+          </form>
+          <div id="forgot-error" class="login-error"></div>
+          <a href="#" id="forgot-back" class="forgot-link">← back to login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. Loading ===== -->
+    <section id="screen-loading" class="screen">
+      <div class="card ugly-card wide mx-auto text-center">
+        <div class="card-body">
+          <h1 class="h3">Loading your premium experience…</h1>
+          <div class="loading-track my-4"><div id="loading-fill" class="loading-fill"></div></div>
+          <div id="loading-pct" class="loading-pct">0%</div>
+          <p id="loading-msg" class="tiny-print">Warming up the hamsters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. Player ===== -->
+    <section id="screen-player" class="screen">
+      <div id="player-wrap" class="player-wrap mx-auto">
+        <div class="player-stage">
+          <canvas id="player-canvas" width="1280" height="720"></canvas>
+          <video id="vid-main" class="hidden-video" src="media/video.mp4" preload="auto" playsinline></video>
+          <video id="vid-ad1" class="hidden-video" src="media/ad1.mp4" preload="auto" playsinline></video>
+          <video id="vid-ad2" class="hidden-video" src="media/ad2.mp4" preload="auto" playsinline></video>
+          <div id="res-badge" class="res-badge">144p 🥔</div>
+          <div id="ad-overlay" class="ad-overlay">
+            <div class="ad-badge">AD <span id="ad-index">1</span>/2 · your video will resume shortly-ish</div>
+            <button id="ad-skip" class="ad-skip" type="button" disabled>Skip in 5</button>
+          </div>
+          <div id="missing-overlay" class="missing-overlay"></div>
+        </div>
+
+        <div class="controls">
+          <button id="btn-pause" class="btn btn-warning ctrl-btn" type="button" title="Pause">⏸</button>
+          <div class="progress-area">
+            <div id="progress-track" class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+            <div id="time-label" class="time-label">0:00 / 0:00</div>
+          </div>
+          <div id="volume-knob" class="volume-knob" title="Volume"></div>
+          <button id="btn-fullscreen" class="btn btn-info ctrl-btn" type="button" title="Fullscreen">⛶</button>
+        </div>
+        <p class="tiny-print text-center mt-2">Tip: quality is powered by mouse movement. Shake harder for HD.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">© 1999 Abu Tha2er el Mo9ale7 Industries · Terms of Suffering · Privacy (lol)</footer>
+
+  <!-- Compiled from /ts by `npm run build` (order matters: plain global scripts) -->
+  <script src="js/storage.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/components/circularVolume.js" defer></script>
+  <script src="js/screens/captchaQuestions.js" defer></script>
+  <script src="js/screens/captchaSort.js" defer></script>
+  <script src="js/screens/login.js" defer></script>
+  <script src="js/screens/loading.js" defer></script>
+  <script src="js/screens/player.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>
