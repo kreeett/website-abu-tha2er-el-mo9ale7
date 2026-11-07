@@ -15,7 +15,8 @@ The compiled CSS and JS are committed, so there is nothing to build:
 Put the videos in `media/`: `video.mp4`, `ad1.mp4` and `ad2.mp4`.
 If a file is missing, the player says so instead of breaking.
 
-To start from scratch (e.g. to see the first-time loading bar again), open `index.html?reset`.
+The 35-second loading bar only ever plays **once per browser**. To see it again, click
+**start over** in the footer (or open `index.html?reset`), which wipes all saved progress.
 
 ## The experience
 
@@ -30,16 +31,18 @@ To start from scratch (e.g. to see the first-time loading bar again), open `inde
    - Catch it once or twice: *Incorrect username or password.*
    - Catch it a third time: *I'm shy 🥺*, and it disappears.
    - **Forgot password?** Whatever you type: *You cannot use your old password.*
-4. **First time only:** a 35-second loading bar that stalls and jumps backwards, then
+4. **67.** The button is gone, so here's a 67 picture for 4 seconds (`assets/67.svg`, swap it for any image).
+5. **First time only:** a 35-second loading bar that stalls and jumps backwards, then
    the page refreshes itself and **all progress resets**. Every later run goes straight
    to the player.
-5. **The player.**
+6. **The player.**
    - **Pause button:** 1st click → Instagram, 2nd click → a very famous music video, 3rd click → plays. Repeats forever.
    - **Progress bar** fills right-to-left (and seeks right-to-left).
    - **Fullscreen** makes the video smaller.
    - **Volume knob:** each click changes the volume by a random 0–5%, alternating
      counter-clockwise (down) and clockwise (up).
-   - **Resolution follows your mouse speed.** Flick faster for HD/4K; stop and it drops to 144p.
+   - **Resolution is a continuous function of your mouse speed**: any value from 144p to 2160p
+     (e.g. "731p"). Flick faster for more pixels; stop and it drops to 144p.
      (Faked with a pixelated canvas, since it's one video file.)
    - **Two ads** at random times, each with a skip countdown that goes back to 5 once.
      No seeking during ads.
@@ -59,7 +62,7 @@ ts/                    TypeScript source (plain scripts, loaded in order by inde
   storage.ts           localStorage/sessionStorage state
   ui.ts                helpers: screens, flash messages
   components/circularVolume.ts
-  screens/             captchaQuestions, captchaSort, login, loading, player
+  screens/             captchaQuestions, captchaSort, login, sixSeven, loading, player
   main.ts              decides the first screen
 scss/                  Bootstrap variable overrides + the "design system"
 js/, css/              compiled output (committed for GitHub Pages)

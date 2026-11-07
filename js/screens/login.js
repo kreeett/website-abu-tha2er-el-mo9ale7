@@ -153,6 +153,9 @@ function onLoginCaught() {
     }, 2600);
 }
 function afterButtonDisappears() {
+    show67(continueAfterLogin);
+}
+function continueAfterLogin() {
     if (store.get(STORAGE_KEYS.seenLoading) === "1") {
         enterPlayer();
     }

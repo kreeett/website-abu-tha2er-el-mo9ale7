@@ -3,22 +3,25 @@
 //  • Pause button cycles: Instagram → Rick Roll → play → (repeat), same tab.
 //  • Progress bar fills right-to-left.
 //  • Fullscreen button makes the video smaller.
-//  • Resolution follows mouse speed (fake: pixelated canvas). Stop moving → 144p.
+//  • Resolution is a continuous function of mouse speed (fake: pixelated canvas). Stop → 144p.
 //  • Two ads at random times, each with a fake skip countdown.
 const PAUSE_LINKS = [
     "https://www.instagram.com/codeflow.psut/",
     "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 ];
-// minSpeed is mouse speed in px per millisecond.
-const RESOLUTION_LEVELS = [
-    { height: 144, label: "144p 🥔", minSpeed: 0 },
-    { height: 240, label: "240p 🫤", minSpeed: 0.4 },
-    { height: 360, label: "360p 🙂", minSpeed: 0.9 },
-    { height: 480, label: "480p 😃", minSpeed: 1.6 },
-    { height: 720, label: "720p HD 😎", minSpeed: 2.5 },
-    { height: 1080, label: "1080p 🔥", minSpeed: 3.6 },
-    { height: 2160, label: "4K ULTRA 🚀", minSpeed: 5.0 },
-];
+// Resolution is a continuous function of mouse speed (px per ms): any value from
+// 144p to 2160p, e.g. "731p". No fixed steps.
+const MIN_RES = 144;
+const MAX_RES = 2160;
+const SPEED_FOR_MAX_RES = 5.5; // px/ms needed for full 4K
+function resolutionForSpeed(speed) {
+    const t = Math.min(1, Math.max(0, speed / SPEED_FOR_MAX_RES));
+    return Math.round(MIN_RES + Math.pow(t, 0.8) * (MAX_RES - MIN_RES));
+}
+function resolutionLabel(height) {
+    const emoji = height >= 2000 ? "🚀" : height >= 1080 ? "🔥" : height >= 720 ? "😎" : height >= 360 ? "🙂" : height > 144 ? "🫤" : "🥔";
+    return `${height}p ${emoji}`;
+}
 const MOUSE_IDLE_MS = 90;
 // Each ad lands somewhere between 10% and 90% of the video, at least 15% apart.
 const AD_WINDOW = [0.1, 0.9];
@@ -35,7 +38,7 @@ let volume01 = 0.5;
 let mouseSpeed = 0;
 let lastMouse = { x: 0, y: 0, t: 0 };
 let lastMouseMoveAt = 0;
-let currentLevel = RESOLUTION_LEVELS[0];
+let currentResolution = MIN_RES;
 function enterPlayer() {
     store.sessionSet(STORAGE_KEYS.inPlayer, "1");
     showScreen("player");
@@ -200,13 +203,10 @@ const lowResCanvas = document.createElement("canvas");
 function renderFrame(now) {
     if (now - lastMouseMoveAt > MOUSE_IDLE_MS)
         mouseSpeed = 0; // stopped → straight to potato
-    let level = RESOLUTION_LEVELS[0];
-    for (const l of RESOLUTION_LEVELS)
-        if (mouseSpeed >= l.minSpeed)
-            level = l;
-    if (level !== currentLevel) {
-        currentLevel = level;
-        byId("res-badge").textContent = level.label;
+    const resolution = resolutionForSpeed(mouseSpeed);
+    if (resolution !== currentResolution) {
+        currentResolution = resolution;
+        byId("res-badge").textContent = resolutionLabel(resolution);
     }
     const canvas = byId("player-canvas");
     const ctx = canvas.getContext("2d");
@@ -218,12 +218,12 @@ function renderFrame(now) {
             canvas.width = vw;
             canvas.height = vh;
         }
-        if (level.height >= vh) {
+        if (resolution >= vh) {
             ctx.imageSmoothingEnabled = true;
             ctx.drawImage(src, 0, 0, vw, vh);
         }
         else {
-            const sh = level.height;
+            const sh = resolution;
             const sw = Math.max(1, Math.round((vw / vh) * sh));
             lowResCanvas.width = sw;
             lowResCanvas.height = sh;

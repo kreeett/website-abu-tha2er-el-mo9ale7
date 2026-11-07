@@ -184,3 +184,23 @@ h1, .h3 { text-shadow: 0 0 4px #e6fff2; }
 }
 @keyframes bubbles { to { background-position: 24px 0; } }
 .loading-pct { font-size: 3rem; font-family: Papyrus, fantasy; color: #ffe1cc; }
+
+.reset-link { color: #ffe6f6; }
+
+/* 67 */
+.six-seven { padding-top: 2rem; }
+.six-seven-img {
+  width: min(520px, 90vw);
+  border-radius: 50%;
+  animation: six-seven 0.5s ease-in-out infinite alternate;
+}
+.six-seven-text {
+  font-size: 4rem;
+  color: #ffd1ee;
+  text-shadow: 0 0 10px #e6fff2;
+  animation: six-seven 0.5s ease-in-out infinite alternate-reverse;
+}
+@keyframes six-seven {
+  from { transform: rotate(-6deg) translateY(-10px); }
+  to   { transform: rotate(6deg) translateY(10px); }
+}

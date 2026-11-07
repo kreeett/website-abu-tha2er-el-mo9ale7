@@ -39,10 +39,21 @@ function startLoading(onDone) {
     const fill = byId("loading-fill");
     const pct = byId("loading-pct");
     const msg = byId("loading-msg");
-    const start = performance.now();
+    const start = Date.now();
     let lastMsg = -1;
-    const tick = (now) => {
-        const elapsed = now - start;
+    let finished = false;
+    const finish = () => {
+        if (finished)
+            return;
+        finished = true;
+        window.clearInterval(ticker);
+        fill.style.width = "100%";
+        pct.textContent = "100%";
+        onDone();
+    };
+    // A plain interval (not requestAnimationFrame) so it keeps going in background tabs.
+    const tick = () => {
+        const elapsed = Date.now() - start;
         const p = loadingPercentAt(elapsed / 1000);
         fill.style.width = `${p}%`;
         pct.textContent = `${Math.floor(p)}%`;
@@ -51,12 +62,10 @@ function startLoading(onDone) {
             msg.textContent = LOADING_MESSAGES[m] + "…";
             lastMsg = m;
         }
-        if (elapsed >= LOADING_DURATION_MS) {
-            onDone();
-        }
-        else {
-            requestAnimationFrame(tick);
-        }
+        if (elapsed >= LOADING_DURATION_MS)
+            finish();
     };
-    requestAnimationFrame(tick);
+    const ticker = window.setInterval(tick, 50);
+    tick();
+    window.setTimeout(finish, LOADING_DURATION_MS + 200); // safety net
 }
