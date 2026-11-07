@@ -4,6 +4,7 @@
 const STORAGE_KEYS = {
     firstRunDone: "abuThaer.firstRunDone", // the first-time refresh/reset already happened
     pauseCount: "abuThaer.pauseCount", // where we are in the pause-button cycle
+    skipCount: "abuThaer.skipCount", // where we are in the skip-button cycle
     inPlayer: "abuThaer.inPlayer", // (session) user already reached the player this tab
 };
 const store = {
@@ -51,6 +52,7 @@ const store = {
 /** Wipe everything (used by the first-time reset and by ?reset in the URL). */
 function resetAllProgress(keepFirstRunDone) {
     store.remove(STORAGE_KEYS.pauseCount);
+    store.remove(STORAGE_KEYS.skipCount);
     store.sessionClear();
     if (keepFirstRunDone) {
         store.set(STORAGE_KEYS.firstRunDone, "1");

@@ -32,9 +32,12 @@ function shuffle(items) {
     return copy;
 }
 function formatTime(seconds) {
-    if (!isFinite(seconds) || seconds < 0)
+    if (!isFinite(seconds))
         seconds = 0;
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return `${m}:${s.toString().padStart(2, "0")}`;
+    const sign = seconds < 0 ? "-" : "";
+    const t = Math.floor(Math.abs(seconds));
+    const h = Math.floor(t / 3600);
+    const m = Math.floor((t % 3600) / 60);
+    const s = (t % 60).toString().padStart(2, "0");
+    return h > 0 ? `${sign}${h}:${m.toString().padStart(2, "0")}:${s}` : `${sign}${m}:${s}`;
 }

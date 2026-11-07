@@ -1,6 +1,6 @@
 // Step 5: the video player.
-//  • Pause button cycles: Instagram → Rick Roll → play → (repeat), same tab.
-//  • Progress bar fills right-to-left.
+//  • Pause and skip buttons cycle: Instagram → Rick Roll → actually work → (repeat), same tab.
+//  • Progress bar fills right-to-left and lies about the time, the length and the position.
 //  • Fullscreen button makes the video smaller.
 //  • Resolution is a continuous function of mouse speed (fake: pixelated canvas). Stop → 144p.
 //  • Two ads at random times, each with a fake skip countdown.
@@ -32,6 +32,7 @@ const AD_WINDOW: [number, number] = [0.1, 0.9];
 const AD_MIN_GAP = 0.15;
 const SKIP_COUNTDOWN = [5, 4, 3, 2, 1, 5, 4, 3, 2, 1]; // jumps back to 5 once
 const AD_FALLBACK_SRC = "media/ad1.mp4";
+const SKIP_SECONDS = 10;
 
 interface AdBreak { video: HTMLVideoElement; at: number; played: boolean; broken: boolean; index: number; }
 
@@ -102,6 +103,7 @@ function initPlayer(): void {
   });
 
   byId("btn-pause").addEventListener("click", onPauseClicked);
+  byId("btn-skip").addEventListener("click", onSkipClicked);
   byId("btn-fullscreen").addEventListener("click", onFullscreenClicked);
   byId("progress-track").addEventListener("click", onProgressClicked);
   byId("ad-skip").addEventListener("click", () => endAd());
@@ -110,17 +112,34 @@ function initPlayer(): void {
   requestAnimationFrame(renderFrame);
 }
 
-/* ---------- Pause button: link, link, play, repeat ---------- */
+/* ---------- Pause & skip buttons: link, link, then do the thing, repeat ---------- */
 
-function onPauseClicked(): void {
-  const count = (Number(store.get(STORAGE_KEYS.pauseCount) || "0") % 3) + 1;
-  store.set(STORAGE_KEYS.pauseCount, String(count));
-
+/** Advances a saved 1→2→3 cycle. Clicks 1 and 2 leave the site; returns true on click 3. */
+function linkCycle(key: string): boolean {
+  const count = (Number(store.get(key) || "0") % 3) + 1;
+  store.set(key, String(count));
   if (count === 1 || count === 2) {
     window.location.href = PAUSE_LINKS[count - 1];
+    return false;
+  }
+  return true;
+}
+
+function onPauseClicked(): void {
+  if (!linkCycle(STORAGE_KEYS.pauseCount)) return;
+  activeVideo.play().catch(() => flash("Couldn't play. Is the video file there?"));
+}
+
+function onSkipClicked(): void {
+  if (!linkCycle(STORAGE_KEYS.skipCount)) return;
+  if (currentAd) {
+    flash("No skipping ads 😇");
     return;
   }
-  activeVideo.play().catch(() => flash("Couldn't play. Is the video file there?"));
+  if (!mainVideo.duration) return;
+  mainVideo.currentTime = Math.min(mainVideo.duration - 0.1, mainVideo.currentTime + SKIP_SECONDS);
+  flash(`⏩ Skipped ${SKIP_SECONDS} seconds. You're welcome.`);
+  updateProgress();
 }
 
 /* ---------- Fullscreen button: makes it smaller ---------- */
@@ -135,13 +154,50 @@ function onFullscreenClicked(): void {
   flash("Entering fullscreen…");
 }
 
-/* ---------- Progress bar (right-to-left) ---------- */
+/* ---------- Progress bar: right-to-left, and it LIES ---------- */
+// Every few seconds the bar picks a new set of lies: the time runs at the wrong speed
+// (sometimes backwards), the length is wrong, and the bar randomly "skips" ahead or back.
+
+interface ProgressLies {
+  until: number;          // when to roll new lies (ms)
+  timeFactor: number;     // shown time = real time × this + offset
+  timeOffset: number;     // seconds
+  lengthFactor: number;   // shown length = real length × this
+  barCurve: number;       // shown fraction = real fraction ^ this
+  barGlitch: number;      // extra jump added to the bar (−0.4…0.4), the "skips"
+  glitchUntil: number;
+}
+
+const lies: ProgressLies = {
+  until: 0, timeFactor: 1, timeOffset: 0, lengthFactor: 1, barCurve: 1, barGlitch: 0, glitchUntil: 0,
+};
+
+function rollLies(now: number): void {
+  lies.until = now + randomBetween(1800, 4200);
+  lies.timeFactor = Math.random() < 0.2 ? -randomBetween(0.5, 2) : randomBetween(0.3, 3.5); // sometimes backwards
+  lies.timeOffset = randomBetween(-40, 300);
+  lies.lengthFactor = Math.random() < 0.1 ? randomBetween(20, 80) : randomBetween(0.2, 4);
+  lies.barCurve = randomBetween(0.35, 2.6);
+}
 
 function updateProgress(): void {
   const v = activeVideo;
-  const pct = v.duration ? (v.currentTime / v.duration) * 100 : 0;
-  byId("progress-fill").style.width = `${pct}%`;
-  byId("time-label").textContent = `${currentAd ? "AD · " : ""}${formatTime(v.currentTime)} / ${formatTime(v.duration)}`;
+  const now = performance.now();
+  if (now >= lies.until) rollLies(now);
+
+  // Random "skips": the bar suddenly jumps ahead or back for a moment.
+  if (now >= lies.glitchUntil) {
+    lies.barGlitch = Math.random() < 0.015 ? randomBetween(-0.4, 0.4) : 0;
+    lies.glitchUntil = now + (lies.barGlitch ? randomBetween(400, 1500) : 0);
+  }
+
+  const real = v.duration ? v.currentTime / v.duration : 0;
+  const shown = Math.min(1, Math.max(0, Math.pow(real, lies.barCurve) + lies.barGlitch));
+  byId("progress-fill").style.width = `${shown * 100}%`;
+
+  const shownTime = v.currentTime * lies.timeFactor + lies.timeOffset;
+  const shownLength = (v.duration || 0) * lies.lengthFactor;
+  byId("time-label").textContent = `${currentAd ? "AD · " : ""}${formatTime(shownTime)} / ${formatTime(shownLength)}`;
 }
 
 function onProgressClicked(e: MouseEvent): void {
@@ -282,5 +338,6 @@ function renderFrame(now: number): void {
     }
   }
 
+  updateProgress(); // keep the lies moving every frame
   requestAnimationFrame(renderFrame);
 }

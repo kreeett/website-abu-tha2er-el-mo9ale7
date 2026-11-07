@@ -42,7 +42,10 @@ The first-time reset only happens **once per browser**. To start completely fres
    Every later run goes straight to the player.
 5. **The player.** Over the player, the cursor turns into a duck 🦆.
    - **Pause button:** 1st click → Instagram, 2nd click → a very famous music video, 3rd click → plays. Repeats forever.
-   - **Progress bar** fills right-to-left (and seeks right-to-left).
+   - **Skip button (↻):** same deal: Instagram, the music video, then it finally skips 10 seconds. Repeats forever.
+   - **Progress bar** fills right-to-left (and seeks right-to-left), and it **lies**: every few
+     seconds it invents a new current time (sometimes running backwards), a new video length,
+     a warped bar position, and the bar randomly "skips" ahead or back.
    - **Fullscreen** makes the video smaller.
    - **Volume knob:** each click changes the volume by a random 0–5%, alternating
      counter-clockwise (down) and clockwise (up).
